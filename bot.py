@@ -1,15 +1,24 @@
 import os
-from telegram import Update
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Bot is live ✅")
+TOKEN = os.getenv("BOT_TOKEN")
 
-def main():
-    token = os.environ["BOT_TOKEN"]
-    app = Application.builder().token(token).build()
-    app.add_handler(CommandHandler("start", start))
-    app.run_polling()
+async def post(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    buttons = [
+        [InlineKeyboardButton("Watch Now 🎬", url="https://t.me/yourlink")],
+        [InlineKeyboardButton("Join Channel 🔔", url="https://t.me/yourchannel")]
+    ]
+    reply_markup = InlineKeyboardMarkup(buttons)
 
-if __name__ == "__main__":
-    main()
+    await context.bot.send_message(
+        chat_id='@yourchannelusername',
+        text="🔥 Frieren Hindi Dubbed Season 1\nEP 01–25",
+        reply_markup=reply_markup
+    )
+
+    await update.message.reply_text("Post sent to channel ✅")
+
+app = Application.builder().token(TOKEN).build()
+app.add_handler(CommandHandler("post", post))
+app.run_polling()
