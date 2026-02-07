@@ -6,10 +6,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Bot is live ✅")
 
 def main():
-    token = os.environ["BOT_TOKEN"]
+    token = os.environ.get("BOT_TOKEN") # .get use karna behtar hai
     app = Application.builder().token(token).build()
     app.add_handler(CommandHandler("start", start))
     app.run_polling()
 
 if __name__ == "__main__":
     main()
+    
